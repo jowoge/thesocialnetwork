@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<!-- # I wrote this code -->
+<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5">
+        <!-- profile left column -->
+        <div class="col-md-3">
+            <div class="post-preview" style="text-align: center;">
+                {% if profile.pfp %}
+                    <img src="/media/{{ profile.pfp }}" class="square p-2" width="200" height="200" />
+                {% else %}
+                    <img src="/static/profile_image/blank_profile_image.png" class="square p-2" width="200" height="200" />
+                {% endif %}
+                <h2 class="post-title">{{ profile.user }}</h2>
+                <h3 class="post-subtitle" style="font-weight: normal;">{{ profile.first_name }} {{ profile.last_name }}</h3>
+                <a class="btn btn-primary text-uppercase" href="/edit_profile" role="button" style="color:white">edit profile</a>
+            </div>
+        </div>
+        <!-- posts middle column -->
+        <div class="col-md-6">
+            {% for post in posts %}
+            <div class="container px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5">
+                    <div class="col-md-12">
+                        <!-- Post preview -->
+                        <div class="post-preview">
+                            {% if post.image %}
+                                <img src="{{ post.image.url }}" alt="post_image" style="max-width: 600px; max-height: 500px;">
+                            {% endif %}
+                            <h3 class="post-subtitle" style="font-weight: normal;">{{ post.text }}</h3>
+                            <p class="post-meta">{{ post.timestamp }}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        <!-- followers/following right column -->
+        <div class="col-md-3 post-preview" style="text-align: center;">
+            <h2 class="post-title">followers</h2>
+            {% for follower, pfp_url in followers %}
+            <div class="d-flex justify-content-center">
+                <div class="d-flex align-items-center">
+                    {% if pfp_url %}
+                        <img src="{{ pfp_url }}" alt="follower profile picture" class="img-fluid p-2" width="50" height="50" />
+                    {% else %}
+                        <!-- Display a default image or placeholder for followings with no profile picture -->
+                        <img src="/static/profile_image/blank_profile_image.png" alt="blank profile picture" class="img-fluid p-2" width="50" height="50" />
+                    {% endif %}
+                    <h2 class="post-subtitle" style="font-weight: normal;"><a href="/viewing/{{ follower.follower }}/">{{ follower.follower }}</a></h2>
+                </div>
+            </div>
+            {% endfor %}
+            <h2 class="post-title">following</h2>
+            {% for following, pfp_url in followings %}
+            <div class="d-flex justify-content-center">
+                <div class="d-flex align-items-center">
+                    {% if pfp_url %}
+                        <img src="{{ pfp_url }}" alt="following profile picture" class="img-fluid p-2" width="50" height="50" />
+                    {% else %}
+                        <!-- Display a default image or placeholder for followings with no profile picture -->
+                        <img src="/static/profile_image/blank_profile_image.png" alt="blank profile picture" class="img-fluid p-2" width="50" height="50" />
+                    {% endif %}
+                    <h2 class="post-subtitle" style="font-weight: normal;"><a href="/viewing/{{ following.user }}/">{{ following.user }}</a></h2>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+<!-- # end of code I wrote -->
+{% endblock content %}

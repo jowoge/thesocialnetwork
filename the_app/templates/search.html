@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+<!-- # I wrote this code -->
+<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+            <div class="post-preview">
+                <h2 class="post-title">search results</h2>
+                <p class="post-subtitle">
+                    {% for user, pfp_url in search_result %}
+                    <div class="">
+                        <div class="d-flex align-items-center">
+                            {% if pfp_url %}
+                                <img src="{{ pfp_url }}" alt="user profile picture" class="img-fluid p-1" width="50" height="50" />
+                            {% else %}
+                                <!-- Display a default image or placeholder for followings with no profile picture -->
+                                <img src="/static/profile_image/blank_profile_image.png" alt="blank profile picture" class="img-fluid p-1" width="50" height="50" />
+                            {% endif %}
+                            <h2 class="post-subtitle" style="font-weight: normal;"><a href="/viewing/{{ user }}/">{{ user }}</a></h2>
+                        </div>
+                    </div>
+                    <br>
+                    {% endfor %}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- # end of code I wrote -->
+{% endblock content %}
+

@@ -1,0 +1,45 @@
+{% extends "./base.html" %}
+<!-- # I wrote this code -->
+{% block content %}
+<section>
+    <main class="mb-4">
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <form class="login_form" action="{% url 'chats' %}" method="post">
+                        {% csrf_token %}
+                        <div class="form-floating">
+                            <input class="form-control" id="id_chatroom" name="chatroom" type="text" placeholder="chatroom" data-sb-validations="required" />
+                            <label for="id_chatroom">create chatroom (no spaces)</label>
+                        </div>
+                        <br>
+                        <input type="submit" name="submit" value="CREATE" class="btn btn-primary text-uppercase"/>
+                    </form>
+                </div>   
+            </div>
+        </div>
+    </main>
+</section>
+<br>
+<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+            <div class="post-preview">
+                <h2 class="post-title">chatrooms</h2>
+                <p class="post-subtitle">
+                {% if chatroom %}
+                {% for room in chatroom %}
+                    <a href="{{room.chatroom}}">{{room.chatroom}}</a>
+                    <br>
+                {% endfor %}
+                {% else %}
+                    <p>No chatroom available</p>
+                {% endif %}
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock content %}
+<!-- # end of code I wrote -->

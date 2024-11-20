@@ -1,0 +1,66 @@
+{% extends "./base.html" %}
+<!-- # I wrote this code -->
+{% block content %}
+<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+            <div class="post-preview">
+                <h2>Chatroom:&nbsp&nbsp&nbsp{{chatroom}}</h2>
+                <!-- <form method="post" action="deleteChatroom/{{chatroom}}">
+                    {% csrf_token %}
+                    <button class="btn btn-primary text-uppercase" type="submit">delete chatroom</button>
+                </form> -->
+                <p>you are logged in as <b><span id="user">{{user.username}}</span></b></p>
+                <textarea class="bg-secondary text-light" id="chat-log" cols="80" rows="15">
+{% for message in chat_history %}{{ message.user }}: {{ message.message }}
+{% endfor %}</textarea>
+                <div class="form-floating">
+                    <input class="form-control" id="chat-message-input" name="message" type="text" placeholder="chatroom"/>
+                    <label for="chat-message-input">type your message here...</label>
+                    <input id="chat-message-submit" type="submit" name="submit" value="send" class="btn btn-primary text-uppercase"/>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- # I wrote this code -->
+{{ chatroom|json_script:"room-name" }}
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // code from django tutorial, chat example
+        const roomName = JSON.parse(document.getElementById('room-name').textContent);
+        // connect web server
+        const chatSocket = new WebSocket('ws://' + window.location.host + '/ws/chat/' + roomName + '/');
+
+        chatSocket.onmessage = function (e) {
+            const data = JSON.parse(e.data);
+            document.querySelector('#chat-log').value += (data.message + '\n');
+        };
+
+        chatSocket.onclose = function (e) {
+            console.error('Chat socket closed unexpectedly');
+        };
+
+        document.querySelector('#chat-message-input').focus();
+        document.querySelector('#chat-message-input').onkeyup = function (e) {
+            if (e.keyCode === 13) {  // enter, return
+                document.querySelector('#chat-message-submit').click();
+            }
+        };
+
+        document.querySelector('#chat-message-submit').onclick = function (e) {
+            const messageInputDom = document.querySelector('#chat-message-input');
+            const message = messageInputDom.value;
+            const user = document.getElementById('user').textContent;
+
+            // Send the message to the web server
+            chatSocket.send(JSON.stringify({
+                'message': user + ': ' + message
+                // 'message': message
+            }));
+            messageInputDom.value = '';
+        };
+    });
+</script>
+{% endblock content %}

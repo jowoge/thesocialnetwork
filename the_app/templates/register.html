@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block content %}
+<!-- # I wrote this code -->
+{% if not registered %}
+<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+            <div class="post-preview">
+                <h2 class="post-title">register</h2>
+                <p class="post-subtitle">
+                    have an account? 
+                    <a id="register-nav" href="/login">login</a>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- Main Content-->
+<section>
+    <main class="mb-4">
+        <div class="container px-4 px-lg-5">
+            <div class="row gx-4 gx-lg-5 justify-content-center">
+                <div class="col-md-10 col-lg-8 col-xl-7">
+                    <form id="user_form" method="post" action="/register/" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-floating">
+                            <input class="form-control" id="id_username" name="username" type="text" placeholder="username" data-sb-validations="required" />
+                            <label for="id_username">username</label>
+                            <div class="invalid-feedback" data-sb-feedback="username:required">username is required</div>
+                        </div>
+                        <div class="form-floating">
+                            <input class="form-control" id="id_password" name="password" type="password" placeholder="password" data-sb-validations="required" />
+                            <label for="id_password">password</label>
+                            <div class="invalid-feedback" data-sb-feedback="password:required">password is required</div>
+                        </div>
+                        <div class="form-floating">
+                            <input class="form-control" id="id_first_name" name="first_name" type="text" placeholder="first_name" data-sb-validations="required" />
+                            <label for="id_first_name">first name</label>
+                            <div class="invalid-feedback" data-sb-feedback="first_name:required">first_name is required</div>
+                        </div>
+                        <div class="form-floating">
+                            <input class="form-control" id="id_last_name" name="last_name" type="text" placeholder="last_name" data-sb-validations="required" />
+                            <label for="id_last_name">last name</label>
+                            <div class="invalid-feedback" data-sb-feedback="last_name:required">last_name is required</div>
+                        </div>
+                        <div class="form-floating">
+                            <input class="form-control" id="id_dob" name="dob" type="date" placeholder="dob" data-sb-validations="required" />
+                            <label for="id_dob">date of birth</label>
+                            <div class="invalid-feedback" data-sb-feedback="dob:required">dob is required</div>
+                        </div>
+                        <!-- {{ profile_form.as_p }} -->
+                        <br>
+                        <input type="submit" name="submit" value="register" class="btn btn-primary text-uppercase" />
+                    </form>
+                </div>   
+            </div>
+        </div>
+    </main>
+</section>
+{% else %}
+<div class="container px-4 px-lg-5">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+        <div class="col-md-10 col-lg-8 col-xl-7">
+            <div class="post-preview">
+                <h2 class="post-title">registration successful</h2>
+                <p class="post-subtitle">thank you for signing up</p>
+                <a class="btn btn-primary text-uppercase" href="/login" role="button" style="color:white">login</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<!-- # end of code I wrote -->
+{% endblock content %}

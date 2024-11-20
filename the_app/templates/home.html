@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block content %}
+    <!-- # I wrote this code -->
+    <!-- show posts only is user is authenticated -->
+    {% if request.user.is_authenticated %}
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div class="post-preview">
+                    <form action="/" method="post" class="card p-2" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="form-floating">
+                            <textarea class="form-control" id="id_text" name="text" type="text" placeholder="" rows=""></textarea>
+                            <label for="id_text">write something....</label>
+                        </div>
+                        <br>
+                        <div>{{ post_form.image.label }} {{ post_form.image }}</div>
+                        <br>
+                        <input type="submit" name="submit" value="enter" class="btn btn-primary text-uppercase"/>
+                    </form>
+                    <br>
+                    <!-- display user's posts and followings' posts  -->
+                    {% for post in posts %}
+                    <div class="">
+                        <div class="d-flex align-items-center">
+                            {% for profile, pfp_url in profiles %}
+                                <!-- check if the username if equals to post's username -->
+                                {% if profile.user == post.user %}
+                                    <!-- if yes, show the profile image -->
+                                    {% if pfp_url %}
+                                        <img src="{{ pfp_url }}" alt="user profile picture" class="img-fluid p-1" width="50" height="50">
+                                    {% else %}
+                                        <!-- Display a default image or placeholder for followings with no profile picture -->
+                                        <img src="/static/profile_image/blank_profile_image.png" alt="blank profile picture" class="img-fluid p-1" width="50" height="50" />
+                                    {% endif %}
+                                {% endif %}
+                            {% endfor %}
+                            <div class="post-content">
+                                <h3 class="post-subtitle">
+                                    <a href="/viewing/{{ post.user.username }}/">
+                                        {{ post.user.username }}
+                                    </a></h3>
+                            </div>
+                        </div>
+                    </div>
+                    {% if post.image %}
+                        <img src="{{ post.image.url }}" alt="post_image" style="max-width: 690px; max-height: 500px;">
+                    {% endif %}
+                    <h3 class="post-subtitle" style="font-weight: normal;">{{ post.text }}</h3>
+                    <p class="post-meta">{{ post.timestamp }}</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- redirect user to home page if user is not authenticated -->
+    {% else %}
+        <!-- Page Header-->
+        <header class="masthead" >
+            <div class="container position-relative px-4 px-lg-5">
+                <div class="row gx-4 gx-lg-5 justify-content-center">
+                    <div class="col-md-10 col-lg-8 col-xl-7">
+                        <div class="site-heading" style="color:black;">
+                            <h1>thesocialnetwork</h1>
+                            <span class="subheading">a simple application to connect and look back on moments forever.</span>
+                            <!-- <button class="btn btn-primary text-uppercase disabled" id="submitButton" type="submit">Send</button> -->
+                            <br/>
+                            <a class="btn btn-primary text-uppercase" href="/login" role="button">login</a>
+                            <a class="btn btn-primary text-uppercase" href="/register" role="button">register</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+    {% endif %}    
+    <!-- # end of code I wrote -->
+{% endblock content %}
